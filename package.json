@@ -1,0 +1,25 @@
+{
+  "name": "@danielkalen/menu-popover",
+  "version": "1.0.0",
+  "description": "A simple menu popover display system",
+  "main": "dist/js/notices.js",
+  "author": "danielkalen",
+  "license": "MIT",
+  "scripts": {
+    "postversion": "echo \\'$(json -f package.json version)\\' > .version.coffee && npm run build",
+    "build": "npm run compile && npm run minify",
+    "compile": "simplyimport -i src/menu-popover.coffee | coffee -c -s -b > dist/js/menu-popover.js",
+    "minify": "closure-service dist/js/menu-popover.js > dist/js/menu-popover.min.js",
+    "watch": "simplywatch -g 'src/*' -x 'npm run compile -s'"
+  },
+  "devDependencies": {
+    "closure-compiler-service": "*",
+    "coffee-script": "*",
+    "simplyimport": "*",
+    "simplywatch": "*",
+    "uglify": "*"
+  },
+  "dependencies": {
+    "jquery.transit": "^0.9.12"
+  }
+}
