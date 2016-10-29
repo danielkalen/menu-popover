@@ -20,6 +20,5 @@
     "uglify": "*"
   },
   "dependencies": {
-    "jquery.transit": "^0.9.12"
   }
 }
