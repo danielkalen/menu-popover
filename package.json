@@ -1,6 +1,6 @@
 {
   "name": "@danielkalen/menu-popover",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple menu popover display system",
   "main": "dist/js/notices.js",
   "author": "danielkalen",
@@ -19,6 +19,5 @@
     "simplywatch": "*",
     "uglify": "*"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
