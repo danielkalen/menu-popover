@@ -57,6 +57,18 @@
       transform: 'translateY(0)',
       transition: 'transform 0.25s'
     },
+    desc: {
+      position: 'relative',
+      width: '100%',
+      padding: '20px',
+      borderBottom: '1px solid #e6e6e6',
+      boxSizing: 'border-box',
+      fontSize: '15.2px',
+      fontWeight: '500',
+      lineHeight: '1.35',
+      textAlign: 'center',
+      color: 'rgba(0,0,0,0.35)'
+    },
     listItem: {
       position: 'relative',
       width: '100%',
@@ -113,6 +125,9 @@
     container: "<div class='MenuPopover'></div>",
     overlay: "<div class='MenuPopover-overlay'></div>",
     list: "<div class='MenuPopover-list'></div>",
+    desc: function(desc) {
+      return "<div class='MenuPopover-list-desc'>" + desc + "</div>";
+    },
     listItem: function(label) {
       return "<div class='MenuPopover-list-item'> <div class='MenuPopover-list-item-label'>" + label + "</div> </div>";
     }
@@ -123,13 +138,16 @@
   };
   MenuPopover = function(arg) {
     var action, label, options, ref, ref1;
-    this.name = arg.name, this.items = arg.items, this.highlights = (ref = arg.highlights) != null ? ref : [], options = arg.options;
+    this.name = arg.name, this.items = arg.items, this.desc = arg.desc, this.highlights = (ref = arg.highlights) != null ? ref : [], options = arg.options;
     this.options = $.extend(true, {}, defaultOptions, options);
     this.isOpen = false;
     this.els = {};
     this.els.container = $(markup.container).attr('id', this.name);
     this.els.overlay = $(markup.overlay).appendTo(this.els.container);
     this.els.list = $(markup.list).appendTo(this.els.container);
+    if (this.desc) {
+      this.els.desc = $(markup.desc(this.desc)).appendTo(this.els.list);
+    }
     this.els.items = {};
     ref1 = this.items;
     for (label in ref1) {
@@ -145,6 +163,9 @@
     applyStyles(this.els.container, this.options.style.container);
     applyStyles(this.els.overlay, this.options.style.overlay);
     applyStyles(this.els.list, this.options.style.list);
+    if (this.desc) {
+      applyStyles(this.els.desc, this.options.style.desc);
+    }
     ref = this.els.items;
     for (label in ref) {
       itemEl = ref[label];
@@ -212,7 +233,7 @@
       };
     })(this));
   };
-  MenuPopover.version = '1.0.0';
+  MenuPopover.version = '1.1.0';
   MenuPopover.instances = {};
   return window.MenuPopover = MenuPopover;
 })(jQuery);
