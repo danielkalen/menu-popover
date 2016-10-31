@@ -33,6 +33,18 @@ style =
 		transform: 'translateY(0)'
 		transition: 'transform 0.25s'
 
+	desc:
+		position: 'relative'
+		width: '100%'
+		padding: '20px'
+		borderBottom: '1px solid #e6e6e6'
+		boxSizing: 'border-box'
+		fontSize: '15.2px'
+		fontWeight: '500'
+		lineHeight: '1.35'
+		textAlign: 'center'
+		color: 'rgba(0,0,0,0.35)'
+
 	listItem:
 		position: 'relative'
 		width: '100%'

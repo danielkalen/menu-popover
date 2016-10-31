@@ -5,7 +5,7 @@ do ($=jQuery)->
 	import _parts/defaults.coffee
 
 
-	MenuPopover = ({@name, @items, @highlights=[], options})->
+	MenuPopover = ({@name, @items, @desc, @highlights=[], options})->
 		@options = $.extend(true, {}, defaultOptions, options)
 		@isOpen = false
 
@@ -13,6 +13,7 @@ do ($=jQuery)->
 		@els.container = $(markup.container).attr 'id', @name
 		@els.overlay = $(markup.overlay).appendTo(@els.container)
 		@els.list = $(markup.list).appendTo(@els.container)
+		@els.desc = $(markup.desc(@desc)).appendTo(@els.list) if @desc
 		@els.items = {}
 		for label,action of @items
 			@els.items[label] = $(markup.listItem(label)).data('action', action).appendTo(@els.list)
@@ -27,6 +28,7 @@ do ($=jQuery)->
 		applyStyles(@els.container, @options.style.container)
 		applyStyles(@els.overlay, @options.style.overlay)
 		applyStyles(@els.list, @options.style.list)
+		applyStyles(@els.desc, @options.style.desc) if @desc
 		for label,itemEl of @els.items
 			applyStyles(itemEl, @options.style.listItem)
 			applyStyles(itemEl, @options.style.listItemHighlight) if @highlights.includes(label)
