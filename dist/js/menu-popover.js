@@ -133,6 +133,7 @@
     }
   };
   defaultOptions = {
+    'clickEvent': 'click',
     'style': style,
     'styleOpenState': styleOpenState
   };
@@ -181,12 +182,12 @@
     return this.els.container.prependTo(document.body);
   };
   MenuPopover.prototype.attachEvents = function() {
-    this.els.overlay.on('click', (function(_this) {
+    this.els.overlay.on(this.options.clickEvent, (function(_this) {
       return function() {
         return _this.close();
       };
     })(this));
-    this.els.list.on('click', '.MenuPopover-list-item', (function(_this) {
+    this.els.list.on(this.options.clickEvent, '.MenuPopover-list-item', (function(_this) {
       return function(event) {
         var action;
         action = $(event.currentTarget).data('action');
