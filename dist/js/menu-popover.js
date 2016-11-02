@@ -234,7 +234,7 @@
       };
     })(this));
   };
-  MenuPopover.version = '1.1.0';
+  MenuPopover.version = '1.2.0';
   MenuPopover.instances = {};
   return window.MenuPopover = MenuPopover;
 })(jQuery);
