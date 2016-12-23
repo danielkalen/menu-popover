@@ -44,15 +44,22 @@ do ($=jQuery)->
 		if @options.closeOnOverlayTouch
 			@els.overlay.on @options.clickEvent, ()=> @close()
 		
-		@els.list.on @options.clickEvent, '.MenuPopover-list-item', (event)=>
-			action = $(event.currentTarget).data 'action'
-			@close().then(action or ()->)
-		
 		@els.list.on 'touchstart', '.MenuPopover-list-item', ()->
 			applyStyles(@, backgroundColor:'#e3e3e3')
 		
 		@els.list.on 'touchend touchcancel', '.MenuPopover-list-item', ()->
 			removeStyles(@, backgroundColor:'')
+		
+		@els.list.on @options.clickEvent, '.MenuPopover-list-item', (event)=>
+			action = $(event.currentTarget).data 'action'
+
+			if action and typeof action is 'object'
+				Promise.resolve()
+					.then(action.beforeClose)
+					.then ()=> @close()
+					.then(action.afterClose)
+			else
+				@close().then(action)
 
 
 
