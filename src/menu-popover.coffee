@@ -41,7 +41,8 @@ do ($=jQuery)->
 
 
 	MenuPopover::attachEvents = ()->
-		@els.overlay.on @options.clickEvent, ()=> @close()
+		if @options.closeOnOverlayTouch
+			@els.overlay.on @options.clickEvent, ()=> @close()
 		
 		@els.list.on @options.clickEvent, '.MenuPopover-list-item', (event)=>
 			action = $(event.currentTarget).data 'action'
