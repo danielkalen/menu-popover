@@ -8,6 +8,8 @@ do ($=jQuery)->
 	MenuPopover = ({@name, @items, @desc, @highlights=[], options})->
 		@options = $.extend(true, {}, defaultOptions, options)
 		@isOpen = false
+		@openAnimation = Promise.resolve()
+		@closeAnimation = Promise.resolve()
 
 		@els = {}
 		@els.container = $(markup.container).attr 'id', @name
@@ -64,29 +66,31 @@ do ($=jQuery)->
 
 
 
-	MenuPopover::open = ()-> new Promise (resolve)=>
-		listHeight = @els.list[0].clientHeight-30 # 30 = bottom padding
-		applyStyles(@els.container, @options.styleOpenState.container)
-		applyStyles(@els.overlay, @options.styleOpenState.overlay)
-		applyStyles(@els.list, @options.styleOpenState.list, @options.styleOpenState.listTransform(listHeight))
-		
-		setTimeout ()-> window.scroll(0, 0)
-		setTimeout(resolve, 300)
-		
-		@isOpen = true
+	MenuPopover::open = ()-> @closeAnimation.then ()=>
+		@openAnimation = new Promise (resolve)=>
+			listHeight = @els.list[0].clientHeight-30 # 30 = bottom padding
+			applyStyles(@els.container, @options.styleOpenState.container)
+			applyStyles(@els.overlay, @options.styleOpenState.overlay)
+			applyStyles(@els.list, @options.styleOpenState.list, @options.styleOpenState.listTransform(listHeight))
+			
+			setTimeout ()-> window.scroll(0, 0)
+			setTimeout(resolve, 300)
+			
+			@isOpen = true
 
 
 
-	MenuPopover::close = ()-> new Promise (resolve)=>
-		removeStyles(@els.overlay, @options.styleOpenState.overlay, @options.style.overlay)
-		removeStyles(@els.list, @options.styleOpenState.list, @options.style.list)
+	MenuPopover::close = ()-> @openAnimation.then ()=>
+		@closeAnimation = new Promise (resolve)=>
+			removeStyles(@els.overlay, @options.styleOpenState.overlay, @options.style.overlay)
+			removeStyles(@els.list, @options.styleOpenState.list, @options.style.list)
 
-		setTimeout ()=>
-			removeStyles(@els.container, @options.styleOpenState.container, @options.style.container)
-			resolve()
-		, 350
+			setTimeout ()=>
+				removeStyles(@els.container, @options.styleOpenState.container, @options.style.container)
+				resolve()
+			, 350
 
-		@isOpen = false
+			@isOpen = false
 
 
 
