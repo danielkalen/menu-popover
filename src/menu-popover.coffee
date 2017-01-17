@@ -54,43 +54,57 @@ do ($=jQuery)->
 		
 		@els.list.on @options.clickEvent, '.MenuPopover-list-item', (event)=>
 			action = $(event.currentTarget).data 'action'
+			label = event.currentTarget.textContent.replace(/^\s+/,'').replace(/\s+$/,'')
 
 			if action and typeof action is 'object'
 				Promise.resolve()
 					.then(action.beforeClose)
-					.then ()=> @close()
+					.then ()=> @close(label)
 					.then(action.afterClose)
 			else
-				@close().then(action)
+				@close(label).then(action)
 
 
 
 
-	MenuPopover::open = ()-> @closeAnimation.then ()=>
-		@openAnimation = new Promise (resolve)=>
-			listHeight = @els.list[0].clientHeight-30 # 30 = bottom padding
-			applyStyles(@els.container, @options.styleOpenState.container)
-			applyStyles(@els.overlay, @options.styleOpenState.overlay)
-			applyStyles(@els.list, @options.styleOpenState.list, @options.styleOpenState.listTransform(listHeight))
+	MenuPopover::open = ()->
+		Promise.bind(@)
+			.then(@closeAnimation)
+			.then(@options.beforeOpen)
+			.then ()=>
+				@openAnimation = new Promise (resolve)=>
+					listHeight = @els.list[0].clientHeight-30 # 30 = bottom padding
+					applyStyles(@els.container, @options.styleOpenState.container)
+					applyStyles(@els.overlay, @options.styleOpenState.overlay)
+					applyStyles(@els.list, @options.styleOpenState.list, @options.styleOpenState.listTransform(listHeight))
+					
+					setTimeout ()-> window.scroll(0, 0)
+					setTimeout(resolve, 300)
+					
+					@isOpen = true
 			
-			setTimeout ()-> window.scroll(0, 0)
-			setTimeout(resolve, 300)
+			.then(@options.afterOpen)
+
+
+
+	MenuPopover::close = (sourceAction)->
+		Promise.resolve(sourceAction).bind(@)
+			.then(@openAnimation)
+			.then(@options.beforeClose)
+			.then ()=>
+				@closeAnimation = new Promise (resolve)=>
+					removeStyles(@els.overlay, @options.styleOpenState.overlay, @options.style.overlay)
+					removeStyles(@els.list, @options.styleOpenState.list, @options.style.list)
+
+					setTimeout ()=>
+						removeStyles(@els.container, @options.styleOpenState.container, @options.style.container)
+						resolve()
+					, 350
+
+					@isOpen = false
 			
-			@isOpen = true
-
-
-
-	MenuPopover::close = ()-> @openAnimation.then ()=>
-		@closeAnimation = new Promise (resolve)=>
-			removeStyles(@els.overlay, @options.styleOpenState.overlay, @options.style.overlay)
-			removeStyles(@els.list, @options.styleOpenState.list, @options.style.list)
-
-			setTimeout ()=>
-				removeStyles(@els.container, @options.styleOpenState.container, @options.style.container)
-				resolve()
-			, 350
-
-			@isOpen = false
+			.then ()-> sourceAction
+			.then(@options.afterClose)
 
 
 

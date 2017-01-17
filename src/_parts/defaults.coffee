@@ -3,3 +3,7 @@ defaultOptions =
 	'style': style
 	'styleOpenState': styleOpenState
 	'closeOnOverlayTouch': true
+	'beforeOpen': null
+	'afterOpen': null
+	'beforeClose': null
+	'afterClose': null
