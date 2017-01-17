@@ -68,8 +68,7 @@ do ($=jQuery)->
 
 
 	MenuPopover::open = ()->
-		Promise.bind(@)
-			.then(@closeAnimation)
+		Promise.resolve(@closeAnimation).bind(@)
 			.then(@options.beforeOpen)
 			.then ()=>
 				@openAnimation = new Promise (resolve)=>
@@ -88,8 +87,7 @@ do ($=jQuery)->
 
 
 	MenuPopover::close = (sourceAction)->
-		Promise.resolve(sourceAction).bind(@)
-			.then(@openAnimation)
+		Promise.resolve(sourceAction).then(@openAnimation).bind(@)
 			.then(@options.beforeClose)
 			.then ()=>
 				@closeAnimation = new Promise (resolve)=>
