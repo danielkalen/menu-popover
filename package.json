@@ -9,7 +9,8 @@
   "author": "danielkalen",
   "license": "MIT",
   "scripts": {
-    "build": "npm run compile && git add . && git commit -a -m '[Build]'",
+    "postversion": "npm run compile && git add . && git commit -a -m '[Build]'",
+    "build": "npm run compile && npm run minify",
     "compile": "simplyimport bundle -d src/index.coffee > dist/menu-popover.js",
     "minify": "closure-service dist/menu-popover.js > dist/menu-popover.min.js",
     "watch": "simplywatch -g 'src/*' -x 'npm run compile -s'"
