@@ -2,21 +2,23 @@
   "name": "@danielkalen/menu-popover",
   "version": "1.2.0",
   "description": "A simple menu popover display system",
-  "main": "dist/js/notices.js",
+  "main": "dist/menu-popover.js",
+  "browser": {
+    "./dist/menu-popover.js": "./src/index.coffee"
+  },
   "author": "danielkalen",
   "license": "MIT",
   "scripts": {
-    "postversion": "echo \\'$(json -f package.json version)\\' > .version.coffee && npm run build",
-    "build": "npm run compile && npm run minify",
-    "compile": "simplyimport -i src/menu-popover.coffee | coffee -c -s -b > dist/js/menu-popover.js",
-    "minify": "closure-service dist/js/menu-popover.js > dist/js/menu-popover.min.js",
+    "build": "npm run compile && git add . && git commit -a -m '[Build]'",
+    "compile": "simplyimport bundle -d src/index.coffee > dist/menu-popover.js",
+    "minify": "closure-service dist/menu-popover.js > dist/menu-popover.min.js",
     "watch": "simplywatch -g 'src/*' -x 'npm run compile -s'"
   },
   "devDependencies": {
     "closure-compiler-service": "*",
     "coffee-script": "*",
-    "simplyimport": "*",
-    "simplywatch": "*",
+    "simplyimport": "^4.0.0-s34",
+    "simplywatch": "^3.0.0-l2",
     "uglify": "*"
   },
   "dependencies": {}
